@@ -126,7 +126,7 @@ xfce_xkb_configure (XfcePanelPlugin *plugin,
 
     vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 2);
     gtk_widget_show (vbox);
-    gtk_container_add (GTK_CONTAINER (GTK_DIALOG (gtk_dialog_get_content_area(GTK_DIALOG(settings_dialog)))), vbox);
+    gtk_container_add (GTK_CONTAINER (GTK_BOX (gtk_dialog_get_content_area(GTK_DIALOG(settings_dialog)))), vbox);
 
     /*****/
     display_type_frame = xfce_gtk_frame_box_new (_("Show layout as:"), &bin);
