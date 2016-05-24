@@ -128,7 +128,7 @@ xkb_plugin_layout_image_exposed (GtkWidget *widget,
          actual_hsize, actual_vsize,
          xkb->hsize, xkb->vsize, panel_size);
 
-    cr = gdk_cairo_create ((GTK_WIDGET (xkb->layout_image))->window);
+    cr = gdk_cairo_create (gtk_widget_get_window(GTK_WIDGET(xkb->layout_image))); //(GTK_WIDGET (xkb->layout_image))->window);
 
     if (xkb->display_type == DISPLAY_TYPE_IMAGE)
     {

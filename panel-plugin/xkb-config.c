@@ -104,7 +104,7 @@ xkb_config_initialize (t_group_policy group_policy,
     config->callback = callback;
     config->callback_data = callback_data;
 
-    config->engine = xkl_engine_get_instance (GDK_DISPLAY ());
+    config->engine = xkl_engine_get_instance (GDK_DISPLAY_XDISPLAY (gdk_display_get_default ()));
 
     if (!config->engine)
     {

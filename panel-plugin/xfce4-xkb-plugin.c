@@ -91,7 +91,7 @@ static void         xfce_xkb_configure_layout           (GtkWidget *widget,
  *                        Implementation                              *
  * ================================================================== */
 
-XFCE_PANEL_PLUGIN_REGISTER_EXTERNAL (xfce_xkb_construct);
+XFCE_PANEL_PLUGIN_REGISTER (xfce_xkb_construct);
 
 static void
 xfce_xkb_construct (XfcePanelPlugin *plugin)
@@ -128,7 +128,7 @@ xfce_xkb_construct (XfcePanelPlugin *plugin)
             G_CALLBACK (xfce_xkb_about), xkb);
 
     configure_layouts =
-        gtk_image_menu_item_new_with_label (_("Keyboard settings"));
+        gtk_menu_item_new_with_label (_("Keyboard settings"));
 
     theme = gtk_icon_theme_get_for_screen (gdk_screen_get_default());
     pixbuf = gtk_icon_theme_load_icon (theme, "preferences-desktop-keyboard",
@@ -440,7 +440,7 @@ xkb_populate_popup_menu (t_xkb *xkb)
 
         layout_string = xkb_config_get_pretty_layout_name (i);
 
-        menu_item = gtk_image_menu_item_new_with_label (layout_string);
+        menu_item = gtk_menu_item_new_with_label (layout_string);
 
         g_signal_connect (G_OBJECT (menu_item), "activate",
                 G_CALLBACK (xkb_plugin_set_group), GINT_TO_POINTER (i));
