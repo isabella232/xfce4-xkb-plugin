@@ -1,10 +1,9 @@
 # $Id$
 
-plugindir = $(libexecdir)/xfce4/panel-plugins
+plugindir = $(libdir)/xfce4/panel/plugins
+plugin_LTLIBRARIES = libxkb.la
 
-plugin_PROGRAMS = xfce4-xkb-plugin
-
-xfce4_xkb_plugin_SOURCES =								\
+libxkb_la_SOURCES =								\
 	xfce4-xkb-plugin.h								\
 	xfce4-xkb-plugin-private.h							\
 	xfce4-xkb-plugin.c								\
@@ -20,11 +19,10 @@ xfce4_xkb_plugin_SOURCES =								\
 	xkb-callbacks.c
 
 
-xfce4_xkb_plugin_CFLAGS =								\
+libxkb_la_CFLAGS =								\
 	@LIBXFCE4PANEL_CFLAGS@								\
 	@GTK_CFLAGS@									\
 	@LIBXFCE4UI_CFLAGS@								\
-	@LIBXFCE4UTIL_CFLAGS@								\
 	@LIBXKLAVIER_CFLAGS@								\
 	@LIBRSVG_CFLAGS@								\
 	@LIBWNCK_CFLAGS@								\
@@ -33,21 +31,28 @@ xfce4_xkb_plugin_CFLAGS =								\
 	-DFLAGSDIR=\"$(datadir)/xfce4/xkb/flags\"					\
 	-DWNCK_I_KNOW_THIS_IS_UNSTABLE
 
-
-xfce4_xkb_plugin_LDADD = 								\
+libxkb_la_LIBADD = 								\
 	@LIBXFCE4PANEL_LIBS@								\
 	@GTK_LIBS@									\
 	@LIBXFCE4UI_LIBS@								\
-	@LIBXFCE4UTIL_LIBS@								\
 	@LIBXKLAVIER_LIBS@								\
 	@LIBWNCK_LIBS@									\
 	@GARCON_LIBS@									\
 	@LIBRSVG_LIBS@
 
+libxkb_la_LDFLAGS =                                                 \
+        -avoid-version                                                  \
+        -module                                                         \
+        -no-undefined                                                   \
+        -export-symbols-regex '^xfce_panel_module_(preinit|init|construct)' \
+        $(PLATFORM_LDFLAGS)                                             \
+        $(NULL)
+
+
 #
 # Desktop file
 #
-desktopdir = $(datadir)/xfce4/panel-plugins
+desktopdir = $(datadir)/xfce4/panel/plugins
 desktop_in_in_files = xkb-plugin.desktop.in.in
 desktop_in_files = $(desktop_in_in_files:.desktop.in.in=.desktop.in)
 %.desktop.in: %.desktop.in.in
