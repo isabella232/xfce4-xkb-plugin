@@ -118,22 +118,24 @@ xfce_xkb_configure (XfcePanelPlugin *plugin,
     xfce_panel_plugin_block_menu (plugin);
 
     settings_dialog = xfce_titled_dialog_new_with_buttons (_("Keyboard Layouts"),
-            NULL, GTK_DIALOG_NO_SEPARATOR,
-            GTK_STOCK_CLOSE, GTK_RESPONSE_OK, NULL);
+            NULL,
+            GTK_DIALOG_DESTROY_WITH_PARENT,
+            "gtk-close", GTK_RESPONSE_OK, NULL);
+
     gtk_window_set_icon_name (GTK_WINDOW (settings_dialog), "xfce4-settings");
 
-    vbox = gtk_vbox_new (FALSE, 2);
+    vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 2);
     gtk_widget_show (vbox);
-    gtk_container_add (GTK_CONTAINER (GTK_DIALOG (settings_dialog)->vbox), vbox);
+    gtk_container_add (GTK_CONTAINER (GTK_DIALOG (gtk_dialog_get_content_area(GTK_DIALOG(settings_dialog)))), vbox);
 
     /*****/
     display_type_frame = xfce_gtk_frame_box_new (_("Show layout as:"), &bin);
     gtk_widget_show (display_type_frame);
     gtk_box_pack_start (GTK_BOX (vbox), display_type_frame, TRUE, TRUE, 2);
 
-    display_type_optmenu = gtk_combo_box_new_text ();
-    gtk_combo_box_append_text (GTK_COMBO_BOX (display_type_optmenu), _("image"));
-    gtk_combo_box_append_text (GTK_COMBO_BOX (display_type_optmenu), _("text"));
+    display_type_optmenu = gtk_combo_box_text_new ();
+    gtk_combo_box_text_append_text (GTK_COMBO_BOX_TEXT (display_type_optmenu), _("image"));
+    gtk_combo_box_text_append_text (GTK_COMBO_BOX_TEXT (display_type_optmenu), _("text"));
     gtk_widget_set_size_request (display_type_optmenu, 230, -1);
     gtk_container_add (GTK_CONTAINER (bin), display_type_optmenu);
 
@@ -142,8 +144,8 @@ xfce_xkb_configure (XfcePanelPlugin *plugin,
     gtk_widget_show (display_textsize_frame);
     gtk_box_pack_start (GTK_BOX (vbox), display_textsize_frame, TRUE, TRUE, 2);
 
-    display_textsize_scale = gtk_hscale_new_with_range (0, 100, 1);
-    gtk_range_set_update_policy (GTK_RANGE (display_textsize_scale), GTK_UPDATE_CONTINUOUS);
+    display_textsize_scale = gtk_scale_new_with_range (GTK_ORIENTATION_HORIZONTAL, 0, 100, 1);
+    //gtk_range_set_update_policy (GTK_RANGE (display_textsize_scale), GTK_UPDATE_CONTINUOUS);
     gtk_scale_set_value_pos (GTK_SCALE (display_textsize_scale), GTK_POS_RIGHT);
     gtk_widget_set_size_request (display_textsize_scale, 230, -1);
     gtk_container_add (GTK_CONTAINER (bin), display_textsize_scale);
@@ -153,8 +155,8 @@ xfce_xkb_configure (XfcePanelPlugin *plugin,
     gtk_widget_show (display_imgsize_frame);
     gtk_box_pack_start (GTK_BOX (vbox), display_imgsize_frame, TRUE, TRUE, 2);
 
-    display_imgsize_scale = gtk_hscale_new_with_range (0, 100, 1);
-    gtk_range_set_update_policy (GTK_RANGE (display_imgsize_scale), GTK_UPDATE_CONTINUOUS);
+    display_imgsize_scale = gtk_scale_new_with_range (GTK_ORIENTATION_HORIZONTAL, 0, 100, 1);
+    //gtk_range_set_update_policy (GTK_RANGE (display_imgsize_scale), GTK_UPDATE_CONTINUOUS);
     gtk_scale_set_value_pos (GTK_SCALE (display_imgsize_scale), GTK_POS_RIGHT);
     gtk_widget_set_size_request (display_imgsize_scale, 230, -1);
     gtk_container_add (GTK_CONTAINER (bin), display_imgsize_scale);
@@ -163,10 +165,10 @@ xfce_xkb_configure (XfcePanelPlugin *plugin,
     gtk_widget_show (group_policy_frame);
     gtk_box_pack_start (GTK_BOX (vbox), group_policy_frame, TRUE, TRUE, 2);
 
-    group_policy_combo = gtk_combo_box_new_text ();
-    gtk_combo_box_append_text (GTK_COMBO_BOX (group_policy_combo), _("globally"));
-    gtk_combo_box_append_text (GTK_COMBO_BOX (group_policy_combo), _("per window"));
-    gtk_combo_box_append_text (GTK_COMBO_BOX (group_policy_combo), _("per application"));
+    group_policy_combo = gtk_combo_box_text_new ();
+    gtk_combo_box_text_append_text (GTK_COMBO_BOX_TEXT (group_policy_combo), _("globally"));
+    gtk_combo_box_text_append_text (GTK_COMBO_BOX_TEXT (group_policy_combo), _("per window"));
+    gtk_combo_box_text_append_text (GTK_COMBO_BOX_TEXT (group_policy_combo), _("per application"));
     gtk_widget_set_size_request (group_policy_combo, 230, -1);
     gtk_container_add (GTK_CONTAINER (bin), group_policy_combo);
     gtk_widget_show (group_policy_combo);
@@ -187,6 +189,7 @@ xfce_xkb_configure (XfcePanelPlugin *plugin,
     g_signal_connect (display_imgsize_scale, "value_changed", G_CALLBACK (on_display_imgsize_changed), xkb);
 
     gtk_widget_show (settings_dialog);
+
 }
 
 void
@@ -201,7 +204,7 @@ xfce_xkb_about (XfcePanelPlugin *plugin)
     };
 
     about = gtk_about_dialog_new ();
-    gtk_about_dialog_set_name (GTK_ABOUT_DIALOG (about),
+    gtk_about_dialog_set_program_name (GTK_ABOUT_DIALOG (about),
             _("Keyboard Layouts Plugin"));
     gtk_about_dialog_set_version (GTK_ABOUT_DIALOG (about),
             PACKAGE_VERSION);
